@@ -3,8 +3,8 @@ package formatter
 import (
 	"encoding/json"
 	"fmt"
+	"lib-go-logger/pkg/clock"
 	l "lib-go-logger/pkg/log_level"
-	"time"
 )
 
 type LogMessage struct {
@@ -31,24 +31,26 @@ type Interface interface {
 
 type Formatter struct {
 	serviceName string
+	clock       clock.Interface
 }
 
-func New(serviceName string) *Formatter {
+func New(serviceName string, clock clock.Interface) *Formatter {
 
 	return &Formatter{
 		serviceName: serviceName,
+		clock:       clock,
 	}
 }
 
 func (f Formatter) Format(level l.LogLevelEnum, message string, logMessageOptions LogMessageOptions) (string, error) {
 	log := LogMessage{
-		GlobalEventName:      logMessageOptions.GlobalEventName,
-		TraceId:              logMessageOptions.TraceId,
-		SessionId:            logMessageOptions.SessionId,
-		ServiceName:          f.serviceName,
-		Message:              message,
+		GlobalEventTimestamp: f.clock.GetCurrentTimestamp().String(),
 		Level:                level,
-		GlobalEventTimestamp: time.Now().Format(time.RFC3339),
+		Message:              message,
+		ServiceName:          f.serviceName,
+		SessionId:            logMessageOptions.SessionId,
+		TraceId:              logMessageOptions.TraceId,
+		GlobalEventName:      logMessageOptions.GlobalEventName,
 	}
 
 	if logMessageOptions.Context != nil {
