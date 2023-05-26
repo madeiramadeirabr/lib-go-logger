@@ -12,3 +12,5 @@ Aberto para qualquer equipe atualizar e implementar funcionalidades
 
 ### Desenvolvimento
 Para ambiente de desenvolvimento
+
+ 
