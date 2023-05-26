@@ -3,62 +3,94 @@ package logger
 import (
 	"encoding/json"
 	"fmt"
+	"time"
 )
 
 type LoggerInterface interface {
-	Emergency(message string, args interface{}, globalEventName string)
-	Error(message string, args interface{}, globalEventName string)
-	Warning(message string, args interface{}, globalEventName string)
-	Info(message string, args interface{}, globalEventName string)
-	Debug(message string, args interface{}, globalEventName string)
-	Trace(message string, args interface{}, globalEventName string)
+	Emergency(message string, logMessageOptions LogMessageOptions)
+	Error(message string, logMessageOptions LogMessageOptions)
+	Warning(message string, logMessageOptions LogMessageOptions)
+	Info(message string, logMessageOptions LogMessageOptions)
+	Debug(message string, logMessageOptions LogMessageOptions)
+	Trace(message string, logMessageOptions LogMessageOptions)
 }
 
-type LogLevelEnum int
+type LogLevelEnum string
 
 const (
-	LogLevelEmergency LogLevelEnum = 5
-	LogLevelError     LogLevelEnum = 4
-	LogLevelWarning   LogLevelEnum = 3
-	LogLevelInfo      LogLevelEnum = 2
-	LogLevelDebug     LogLevelEnum = 1
-	LogLevelTrace     LogLevelEnum = 0
+	LogLevelEmergency LogLevelEnum = "EMERGENCY"
+	LogLevelError     LogLevelEnum = "ERROR"
+	LogLevelWarning   LogLevelEnum = "WARNING"
+	LogLevelInfo      LogLevelEnum = "INFO"
+	LogLevelDebug     LogLevelEnum = "DEBUG"
+	LogLevelTrace     LogLevelEnum = "TRACE"
 )
 
 type Logger struct {
 	serviceName string
-	logLevel    LogLevelEnum
+	level       LogLevelEnum
 }
 
 type LogMessage struct {
-	GlobalEventTimestamp string `json:"global_event_timestamp"`
-	GlobalEventName      string `json:"global_event_name,omitempty"`
-	Level                string `json:"level"`
-	Context              string `json:"context,omitempty"`
-	Message              string `json:"message"`
-	ServiceName          string `json:"service_name"`
-	TraceId              string `json:"trace_id"`
-	SessionId            string `json:"session_id"`
+	GlobalEventTimestamp string       `json:"global_event_timestamp"`
+	GlobalEventName      string       `json:"global_event_name,omitempty"`
+	Level                LogLevelEnum `json:"level"`
+	Context              string       `json:"context,omitempty"`
+	Message              string       `json:"message"`
+	ServiceName          string       `json:"service_name"`
+	TraceId              string       `json:"trace_id,omitempty"`
+	SessionId            string       `json:"session_id,omitempty"`
+}
+
+type LogMessageOptions struct {
+	GlobalEventName string      `json:"global_event_name,omitempty"`
+	Context         interface{} `json:"context,omitempty"`
+	TraceId         string      `json:"trace_id,omitempty"`
+	SessionId       string      `json:"session_id,omitempty"`
 }
 
 func New(
 	serviceName string,
-	logLevel LogLevelEnum,
+	level LogLevelEnum,
 ) *Logger {
+
 	return &Logger{
 		serviceName: serviceName,
-		logLevel:    logLevel,
+		level:       level,
 	}
 }
 
-func (logger Logger) Log(level LogLevelEnum, message string, args interface{}, globalEventName string) bool {
-	if level > logger.logLevel {
+func (logger Logger) levelStringToInt(level LogLevelEnum) int {
+	switch level {
+	case LogLevelTrace:
+		return 0
+	case LogLevelDebug:
+		return 1
+	case LogLevelInfo:
+		return 2
+	case LogLevelWarning:
+		return 3
+	case LogLevelError:
+		return 4
+	case LogLevelEmergency:
+		return 5
+	default:
+		return 0
+	}
+}
+
+func (logger Logger) isHandling(levelMessage LogLevelEnum) bool {
+	return logger.levelStringToInt(levelMessage) >= logger.levelStringToInt(logger.level)
+}
+
+func (logger Logger) Log(level LogLevelEnum, message string, logMessageOptions LogMessageOptions) bool {
+	if !logger.isHandling(level) {
 		return false
 	}
 
-	formattedMessage, err := logger.formatMessage(message, globalEventName)
+	formattedMessage, err := logger.formatMessage(level, message, logMessageOptions)
 
-	if err == nil {
+	if err != nil {
 		return false
 	}
 
@@ -67,16 +99,21 @@ func (logger Logger) Log(level LogLevelEnum, message string, args interface{}, g
 	return true
 }
 
-func (logger Logger) formatMessage(message string, globalEventName string) (string, error) {
-
+func (logger Logger) formatMessage(level LogLevelEnum, message string, logMessageOptions LogMessageOptions) (string, error) {
 	log := LogMessage{
-		GlobalEventName:      globalEventName,
-		GlobalEventTimestamp: "",
+		GlobalEventName:      logMessageOptions.GlobalEventName,
+		TraceId:              logMessageOptions.TraceId,
+		SessionId:            logMessageOptions.SessionId,
+		ServiceName:          logger.serviceName,
 		Message:              message,
-		TraceId:              "",
-		SessionId:            "",
-		Context:              "",
-		Level:                "",
+		Level:                level,
+		GlobalEventTimestamp: time.Now().Format(time.RFC3339),
+	}
+
+	if logMessageOptions.Context != nil {
+		if context := fmt.Sprintf("%s", logMessageOptions.Context); context != "" {
+			log.Context = context
+		}
 	}
 
 	logMarshal, err := json.Marshal(log)
@@ -88,21 +125,21 @@ func (logger Logger) formatMessage(message string, globalEventName string) (stri
 	return string(logMarshal), nil
 }
 
-func (logger Logger) Emergency(message string, args interface{}, globalEventName string) {
-	logger.Log(LogLevelEmergency, message, args, globalEventName)
+func (logger Logger) Emergency(message string, logMessageOptions LogMessageOptions) {
+	logger.Log(LogLevelEmergency, message, logMessageOptions)
 }
-func (logger Logger) Error(message string, args interface{}, globalEventName string) {
-	logger.Log(LogLevelError, message, args, globalEventName)
+func (logger Logger) Error(message string, logMessageOptions LogMessageOptions) {
+	logger.Log(LogLevelError, message, logMessageOptions)
 }
-func (logger Logger) Warning(message string, args interface{}, globalEventName string) {
-	logger.Log(LogLevelWarning, message, args, globalEventName)
+func (logger Logger) Warning(message string, logMessageOptions LogMessageOptions) {
+	logger.Log(LogLevelWarning, message, logMessageOptions)
 }
-func (logger Logger) Info(message string, args interface{}, globalEventName string) {
-	logger.Log(LogLevelInfo, message, args, globalEventName)
+func (logger Logger) Info(message string, logMessageOptions LogMessageOptions) {
+	logger.Log(LogLevelInfo, message, logMessageOptions)
 }
-func (logger Logger) Debug(message string, args interface{}, globalEventName string) {
-	logger.Log(LogLevelDebug, message, args, globalEventName)
+func (logger Logger) Debug(message string, logMessageOptions LogMessageOptions) {
+	logger.Log(LogLevelDebug, message, logMessageOptions)
 }
-func (logger Logger) Trace(message string, args interface{}, globalEventName string) {
-	logger.Log(LogLevelTrace, message, args, globalEventName)
+func (logger Logger) Trace(message string, logMessageOptions LogMessageOptions) {
+	logger.Log(LogLevelTrace, message, logMessageOptions)
 }
