@@ -7,7 +7,7 @@ import (
 	l "lib-go-logger/pkg/logger"
 )
 
-func makeLogger(config l.Config) *l.Logger {
+func MakeLogger(config l.Config) *l.Logger {
 
 	handler := h.New(config.Level)
 	formatter := f.New(config.ServiceName, clock.Clock{})
