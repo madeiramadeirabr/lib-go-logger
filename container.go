@@ -1,10 +1,10 @@
 package container
 
 import (
-	"lib-go-logger/pkg/clock"
-	f "lib-go-logger/pkg/formatter"
-	h "lib-go-logger/pkg/handler"
-	l "lib-go-logger/pkg/logger"
+	"github.com/madeiramadeirabr/lib-go-logger/pkg/clock"
+	f "github.com/madeiramadeirabr/lib-go-logger/pkg/formatter"
+	h "github.com/madeiramadeirabr/lib-go-logger/pkg/handler"
+	l "github.com/madeiramadeirabr/lib-go-logger/pkg/logger"
 )
 
 func MakeLogger(config l.Config) *l.Logger {

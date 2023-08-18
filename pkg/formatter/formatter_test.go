@@ -2,9 +2,9 @@ package formatter_test
 
 import (
 	"fmt"
-	"lib-go-logger/pkg/clock"
-	f "lib-go-logger/pkg/formatter"
-	"lib-go-logger/pkg/log_level"
+	"github.com/madeiramadeirabr/lib-go-logger/pkg/clock"
+	f "github.com/madeiramadeirabr/lib-go-logger/pkg/formatter"
+	"github.com/madeiramadeirabr/lib-go-logger/pkg/log_level"
 	"testing"
 
 	"github.com/stretchr/testify/assert"

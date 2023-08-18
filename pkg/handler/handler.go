@@ -2,7 +2,7 @@ package handler
 
 import (
 	"fmt"
-	l "lib-go-logger/pkg/log_level"
+	l "github.com/madeiramadeirabr/lib-go-logger/pkg/log_level"
 )
 
 type Interface interface {
