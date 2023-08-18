@@ -5,10 +5,10 @@ import (
 
 	"errors"
 	"github.com/stretchr/testify/assert"
-	f "lib-go-logger/pkg/formatter"
-	h "lib-go-logger/pkg/handler"
-	level "lib-go-logger/pkg/log_level"
-	l "lib-go-logger/pkg/logger"
+	f "github.com/madeiramadeirabr/lib-go-logger/pkg/formatter"
+	h "github.com/madeiramadeirabr/lib-go-logger/pkg/handler"
+	level "github.com/madeiramadeirabr/lib-go-logger/pkg/log_level"
+	l "github.com/madeiramadeirabr/lib-go-logger/pkg/logger"
 )
 
 func TestLogger(t *testing.T) {

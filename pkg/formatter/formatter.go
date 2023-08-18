@@ -3,8 +3,8 @@ package formatter
 import (
 	"encoding/json"
 	"fmt"
-	"lib-go-logger/pkg/clock"
-	l "lib-go-logger/pkg/log_level"
+	"github.com/madeiramadeirabr/lib-go-logger/pkg/clock"
+	l "github.com/madeiramadeirabr/lib-go-logger/pkg/log_level"
 )
 
 type LogMessage struct {

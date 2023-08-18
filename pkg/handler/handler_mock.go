@@ -2,7 +2,7 @@ package handler
 
 import (
 	"github.com/stretchr/testify/mock"
-	l "lib-go-logger/pkg/log_level"
+	l "github.com/madeiramadeirabr/lib-go-logger/pkg/log_level"
 )
 
 type Mock struct {
