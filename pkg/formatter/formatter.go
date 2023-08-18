@@ -3,6 +3,8 @@ package formatter
 import (
 	"encoding/json"
 	"fmt"
+	"time"
+
 	"github.com/madeiramadeirabr/lib-go-logger/pkg/clock"
 	l "github.com/madeiramadeirabr/lib-go-logger/pkg/log_level"
 )
@@ -44,7 +46,7 @@ func New(serviceName string, clock clock.Interface) *Formatter {
 
 func (f Formatter) Format(level l.LogLevelEnum, message string, logMessageOptions LogMessageOptions) (string, error) {
 	log := LogMessage{
-		GlobalEventTimestamp: f.clock.GetCurrentTimestamp().String(),
+		GlobalEventTimestamp: f.clock.GetCurrentTimestamp().Format(time.RFC3339),
 		Level:                level,
 		Message:              message,
 		ServiceName:          f.serviceName,
