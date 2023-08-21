@@ -2,12 +2,10 @@
 
 **Instalação:**
 
-- alterar para ssh
-- 
 No terminal, rode:
 
 ```bash
-$ 
+$ go get github.com/madeiramadeirabr/lib-go-logger
 ```
 
-A partir disso ja é possível usar a biblioteca
+A partir disso já é possível usar a biblioteca

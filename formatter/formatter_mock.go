@@ -1,8 +1,8 @@
 package formatter
 
 import (
+	l "github.com/madeiramadeirabr/lib-go-logger/log_level"
 	"github.com/stretchr/testify/mock"
-	l "github.com/madeiramadeirabr/lib-go-logger/pkg/log_level"
 )
 
 type Mock struct {

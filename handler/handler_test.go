@@ -2,8 +2,8 @@ package handler_test
 
 import (
 	"fmt"
-	h "github.com/madeiramadeirabr/lib-go-logger/pkg/handler"
-	l "github.com/madeiramadeirabr/lib-go-logger/pkg/log_level"
+	h "github.com/madeiramadeirabr/lib-go-logger/handler"
+	l "github.com/madeiramadeirabr/lib-go-logger/log_level"
 	"testing"
 
 	"github.com/stretchr/testify/assert"

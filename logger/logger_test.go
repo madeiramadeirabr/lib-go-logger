@@ -4,11 +4,11 @@ import (
 	"testing"
 
 	"errors"
+	f "github.com/madeiramadeirabr/lib-go-logger/formatter"
+	h "github.com/madeiramadeirabr/lib-go-logger/handler"
+	level "github.com/madeiramadeirabr/lib-go-logger/log_level"
+	l "github.com/madeiramadeirabr/lib-go-logger/logger"
 	"github.com/stretchr/testify/assert"
-	f "github.com/madeiramadeirabr/lib-go-logger/pkg/formatter"
-	h "github.com/madeiramadeirabr/lib-go-logger/pkg/handler"
-	level "github.com/madeiramadeirabr/lib-go-logger/pkg/log_level"
-	l "github.com/madeiramadeirabr/lib-go-logger/pkg/logger"
 )
 
 func TestLogger(t *testing.T) {
