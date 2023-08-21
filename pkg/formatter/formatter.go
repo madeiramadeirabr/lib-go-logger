@@ -2,7 +2,6 @@ package formatter
 
 import (
 	"encoding/json"
-	"fmt"
 	"time"
 
 	"github.com/madeiramadeirabr/lib-go-logger/pkg/clock"
