@@ -1,9 +1,9 @@
 package logger
 
 import (
-	f "github.com/madeiramadeirabr/lib-go-logger/pkg/formatter"
-	h "github.com/madeiramadeirabr/lib-go-logger/pkg/handler"
-	l "github.com/madeiramadeirabr/lib-go-logger/pkg/log_level"
+	f "github.com/madeiramadeirabr/lib-go-logger/formatter"
+	h "github.com/madeiramadeirabr/lib-go-logger/handler"
+	l "github.com/madeiramadeirabr/lib-go-logger/log_level"
 )
 
 type Interface interface {

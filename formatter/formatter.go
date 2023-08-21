@@ -4,8 +4,8 @@ import (
 	"encoding/json"
 	"time"
 
-	"github.com/madeiramadeirabr/lib-go-logger/pkg/clock"
-	l "github.com/madeiramadeirabr/lib-go-logger/pkg/log_level"
+	"github.com/madeiramadeirabr/lib-go-logger/clock"
+	l "github.com/madeiramadeirabr/lib-go-logger/log_level"
 )
 
 type LogMessage struct {
