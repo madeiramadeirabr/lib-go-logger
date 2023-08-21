@@ -13,7 +13,7 @@ type LogMessage struct {
 	GlobalEventTimestamp string         `json:"global_event_timestamp"`
 	GlobalEventName      string         `json:"global_event_name,omitempty"`
 	Level                l.LogLevelEnum `json:"level"`
-	Context              string         `json:"context,omitempty"`
+	Context              interface{}    `json:"context,omitempty"`
 	Message              string         `json:"message"`
 	ServiceName          string         `json:"service_name"`
 	TraceId              string         `json:"trace_id,omitempty"`
@@ -47,18 +47,13 @@ func New(serviceName string, clock clock.Interface) *Formatter {
 func (f Formatter) Format(level l.LogLevelEnum, message string, logMessageOptions LogMessageOptions) (string, error) {
 	log := LogMessage{
 		GlobalEventTimestamp: f.clock.GetCurrentTimestamp().Format(time.RFC3339),
+		Context:              logMessageOptions.Context,
 		Level:                level,
 		Message:              message,
 		ServiceName:          f.serviceName,
 		SessionId:            logMessageOptions.SessionId,
 		TraceId:              logMessageOptions.TraceId,
 		GlobalEventName:      logMessageOptions.GlobalEventName,
-	}
-
-	if logMessageOptions.Context != nil {
-		if context := fmt.Sprintf("%s", logMessageOptions.Context); context != "" {
-			log.Context = context
-		}
 	}
 
 	logMarshal, err := json.Marshal(log)
