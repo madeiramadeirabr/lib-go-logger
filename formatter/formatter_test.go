@@ -12,9 +12,9 @@ import (
 
 func TestFormatter(t *testing.T) {
 	t.Run("Formatter", func(t *testing.T) {
+		formatter := f.New("lib-log-test", clock.Mock{})
+		dateFixture := clock.Mock{}.GetCurrentTimestamp().Format(time.RFC3339)
 		t.Run("Should format and not return error", func(t *testing.T) {
-			formatter := f.New("lib-log-test", clock.Mock{})
-			dateFixture := clock.Mock{}.GetCurrentTimestamp().Format(time.RFC3339)
 			formattedMessage, _ := formatter.Format(log_level.LogLevelError, "mensagem", f.LogMessageOptions{
 				GlobalEventName: "teste",
 				TraceId:         "abcdefgh",
@@ -36,8 +36,6 @@ func TestFormatter(t *testing.T) {
 		})
 
 		t.Run("Should format and omity empty", func(t *testing.T) {
-			formatter := f.New("lib-log-test", clock.Mock{})
-			dateFixture := clock.Mock{}.GetCurrentTimestamp().Format(time.RFC3339)
 			formattedMessage, _ := formatter.Format(log_level.LogLevelError, "mensagem", f.LogMessageOptions{})
 
 			responseExpected := fmt.Sprintf(
