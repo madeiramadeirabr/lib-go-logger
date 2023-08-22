@@ -26,3 +26,7 @@ Para rodar o coverage, execute o comando abaixo:
 ```bash
 $ go test -json -coverprofile=cover.out ./... > result.json
 ```
+
+## Documentação
+
+A documentação técnica pode ser encontrada [aqui](./docs/README.md)
