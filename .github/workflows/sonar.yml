@@ -5,10 +5,14 @@ on:
       - production
   pull_request:
     types: [opened, synchronize, reopened]
+# A imagem do CodeBuild define GOPATH com dois caminhos, que o setup-go@v1/v2 não suporta
+env:
+  GOPATH: /root/go
+
 jobs:
   sonarcloud:
     name: SonarCloud
-    runs-on: ubuntu-latest
+    runs-on: codebuild-madeiramadeira-${{ github.run_id }}-${{ github.run_attempt }}
     steps:
       - uses: actions/checkout@v2
         with:
